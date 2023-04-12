@@ -153,5 +153,35 @@ dny_ts.plot()
 ```
 ![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture11.JPG)
 
+## Name's breakdown by sex over time
+
 ### Transforming the data
+
+#### Another interesting thing we can study is if there is a name that started being for women and ended up being for men.
+
+```python
+all_names=pd.Series(top1000["name"].unique())
+lesley_like= all_names[all_names.str.contains("Lesl")]
+filtered=top1000[top1000["name"].isin(lesley_like)]
+filtered.groupby("name")["births"].sum()
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture12.JPG)
+
+```python
+filtered
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture13.JPG)
+
+```python
+table= filtered.pivot_table("births", index="year", columns="sex", aggfunc="sum")
+table=table.div(table.sum(axis="columns"), axis="index")
+```
+
+### Visualizing the data
+
+#### Plot of the breakdown by sex over time
+
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture14.JPG)
+
+
 
