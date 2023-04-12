@@ -22,7 +22,7 @@ for year in range(1880,2011):
 names=pd.concat(pieces, ignore_index=True)
 names
 ```
-![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/Capture.JPG)
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture.JPG)
 
 #### Since we have tracked the number of births by year (births= Sum of children with each name), we can show this data by gender.
 
@@ -30,7 +30,7 @@ names
 total_births= names.pivot_table("births", index="year", columns="sex", aggfunc=sum)
 total_births.plot(title="Total births by sex and year")
 ```
-![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/Capture2.JPG)
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture1.JPG)
 
 
 
