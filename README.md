@@ -30,16 +30,56 @@ names
 total_births= names.pivot_table("births", index="year", columns="sex", aggfunc=sum)
 total_births.plot(title="Total births by sex and year")
 ```
-![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture1.JPG)
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture2.JPG)
 
+## Female Naming Trends?
 
+### Transforming the data
 
+#### Once we have the number of births by name we can get the proportion of babies given each name relative to the total number of births by year and sex
 
+```python
+def add_prop(group):
+    group["prop"]= group["births"]/group["births"].sum()
+    return group
 
+names=names.groupby(["year","sex"]).apply(add_prop)
+names
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture3.JPG)
 
+#### With the proportion of every name we can study which are the names used throughout the time by gender. So, we are getting 1000 more chosen names.
 
+```python
+def get_top1000(group):
+    return group.sort_values("births", ascending=False)[:1000]
+grouped= names.groupby(["year", "sex"])
+top1000=grouped.apply(get_top1000)
 
+top1000= top1000.reset_index(drop=True)
+```
 
+#### Female Naming Trends
 
+```python
+girls= top1000[top1000["sex"] == "F"]
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture4.JPG)
+
+## A few boy and girl names over time
+
+### Transforming the data
+
+#### We can study how many times the proportion of any name has changed throughout time. To know that we need to change the data frame distribution.
+
+```python
+total_births= top1000.pivot_table("births", index="year", columns="name", aggfunc=sum)
+subset=total_births[["John", "Harry", "Mary", "Marilyn"]]
+subset.plot(subplots=True, figsize=(12,10), title="Number of births per year")
+```
+
+### Visualizing the data
+
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture5.JPG)
 
 
