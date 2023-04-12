@@ -82,4 +82,76 @@ subset.plot(subplots=True, figsize=(12,10), title="Number of births per year")
 
 ![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture5.JPG)
 
+## Proportion of births represented in top one thousand names by sex
+
+### Transforming the data
+
+#### Since we have the names' proportion we can study how much the variety of names have changed. We can do that by getting to know if the sum of the 1000 most chosen names by proportion gets 1.0 (if the total of names is in the 1000 most chosen names).
+
+```python
+table= top1000.pivot_table("prop", index="year",columns="sex", aggfunc=sum)
+table.plot(title="Sum of table1000.prop by year and sex", yticks=np.linspace(0, 1.2,13))
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture6.JPG)
+
+#### We can get to know as well the amount of names that compose the 50% of the names by year and sex.
+
+```python
+def get_quantile_count(group, q=0.5):
+    group= group.sort_values("prop", ascending=False)
+    return group.prop.cumsum().searchsorted(q)+1
+
+diversity=top1000.groupby(["year", "sex"]).apply(get_quantile_count)
+diversity=diversity.unstack()
+diversity
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture7.JPG)
+
+```python
+diversity.plot(title="Number of popular names in top 50%")
+```
+### Visualizing the data
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture8.JPG)
+
+## Last letter changes througout the time
+### Transforming the data
+
+#### Amount the things we can study are how has changed throughout time, the amount of time the last letter of every name is chosen, by year, gender, and births. (The proportion of total births for each sex ending in each letter.
+#### To do this the first thing we would have to do is to take from every name the last letter, then we would need to add each of these letters to the database and group by sex and year.
+
+```python
+def get_last_letter(x):
+    return x[-1]
+
+last_letters= names["name"].map(get_last_letter)
+last_letters.name="last_letter"
+
+table= names.pivot_table("births", index=last_letters, columns=["sex", "year"], aggfunc=sum)
+subtable= table.reindex(columns=[1910,1960,2010], level= "year")
+subtable.sum().unstack("year")
+
+letter_prop= subtable/subtable.sum()
+letter_prop
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture9.JPG)
+
+### Visualizing the data
+
+import matplotlib.pyplot as plt
+
+```python
+fig,axes=plt.subplots(2,1,figsize=(10,8))
+letter_prop["M"].plot(kind="bar", rot=0, ax=axes[0], title="Male", legend=True)
+letter_prop["F"].plot(kind="bar", rot=0, ax=axes[1], title="Female", legend=False)
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture10.JPG)
+
+```python
+letter_prop=table/table.sum()
+dny_ts=letter_prop.loc[["d","n","y"],"M"].T
+dny_ts.plot()
+```
+![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture11.JPG)
+
+### Transforming the data
 
