@@ -36,7 +36,7 @@ total_births.plot(title="Total births by sex and year")
 
 ### Transforming the data
 
-#### Once we have the number of births by name we can get the proportion of babies given each name relative to the total number of births by year and sex
+#### Once we have the number of births by name we can get the proportion of babies given each name relative to the total number of births by year and sex.
 
 ```python
 def add_prop(group):
@@ -114,6 +114,7 @@ diversity.plot(title="Number of popular names in top 50%")
 ![image](https://github.com/EduardoJMR/US-Baby-Names-1880-2010-project/blob/master/images/Capture8.JPG)
 
 ## Last letter changes througout the time
+
 ### Transforming the data
 
 #### Amount the things we can study are how has changed throughout time, the amount of time the last letter of every name is chosen, by year, gender, and births. (The proportion of total births for each sex ending in each letter.
